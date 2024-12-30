@@ -39,7 +39,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('https://dummyjson.com/products?limit=30')
+        const response = await fetch('https://dummyjson.com/products?limit=10')
         const data = await response.json()
         const productsWithRatings = data.products.map((product: Product) => ({
           ...product,

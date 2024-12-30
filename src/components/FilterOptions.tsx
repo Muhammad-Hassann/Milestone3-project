@@ -1,58 +1,68 @@
-import { useState, useEffect } from 'react'
-import { useProductContext } from '@/context/ProductContext'
+import { Slider } from "@/components/ui/slider"
 
-interface FilterOptionsProps {
-  onFilter: (filters: { search: string; category: string }) => void
-}
-
-const FilterOptions: React.FC<FilterOptionsProps> = ({ onFilter }) => {
-  const { products } = useProductContext()
-  const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('')
-
-  const categories = Array.from(new Set(products.map((product) => product.category)))
-
-  useEffect(() => {
-    onFilter({ search, category })
-  }, [search, category, onFilter])
-
+const FilterSection = () => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4">Filter Options</h3>
-      <div className="mb-4">
-        <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
-          Search
-        </label>
-        <input
-          type="text"
-          id="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-          placeholder="Search products..."
-        />
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-2xl font-semibold mb-4">Filters</h2>
+
+      {/* Categories */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2">Categories</h3>
+        {['Skincare', 'Makeup', 'Hair Care', 'Fragrance', 'Tools'].map((category) => (
+          <div key={category} className="flex items-center mb-2">
+            <input type="checkbox" id={category} className="mr-2" />
+            <label htmlFor={category}>{category}</label>
+          </div>
+        ))}
       </div>
-      <div>
-        <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-          Category
-        </label>
-        <select
-          id="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-        >
-          <option value="">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
+
+      {/* Price Range */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2">Price Range</h3>
+        <Slider defaultValue={[0, 100]} max={100} step={1} />
+        <div className="flex justify-between mt-2">
+          <span>$0</span>
+          <span>$100</span>
+        </div>
+      </div>
+
+      {/* Brand */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2">Brand</h3>
+        <select className="w-full p-2 border rounded">
+          <option>All Brands</option>
+          <option>Brand A</option>
+          <option>Brand B</option>
+          <option>Brand C</option>
         </select>
+      </div>
+
+      {/* Rating */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2">Rating</h3>
+        {[4, 3, 2, 1].map((rating) => (
+          <div key={rating} className="flex items-center mb-2">
+            <input type="checkbox" id={`rating-${rating}`} className="mr-2" />
+            <label htmlFor={`rating-${rating}`}>{rating}+ Stars</label>
+          </div>
+        ))}
+      </div>
+
+      {/* Availability */}
+      <div>
+        <h3 className="text-lg font-medium mb-2">Availability</h3>
+        <div className="flex items-center mb-2">
+          <input type="checkbox" id="in-stock" className="mr-2" />
+          <label htmlFor="in-stock">In Stock</label>
+        </div>
+        <div className="flex items-center">
+          <input type="checkbox" id="on-sale" className="mr-2" />
+          <label htmlFor="on-sale">On Sale</label>
+        </div>
       </div>
     </div>
   )
 }
 
-export default FilterOptions
+export default FilterSection
 
